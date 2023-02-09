@@ -7,7 +7,7 @@
 	which is basically a binary search
 */
 uint32_t
-expu(uint32_t n, uint32_t u)
+expu32(uint32_t n, uint32_t u)
 {
 	uint32_t approx = 1;
 	do{
