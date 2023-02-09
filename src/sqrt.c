@@ -43,23 +43,49 @@ sqrtu(uint32_t n)
 }
 #endif
 
-
+#if 0
 /*
 	computes the floor sqrt of an unsigned integer
 
 	its still a binary search but i avoid the multiply by shifting
+
+	i use the fact that  (bit + approx)**2 = bit**2 + 2*approx + approx**2
+	and then since approx**2 would be part of every subsequent multiplication im able to subtract it from the original and basically ignore it
 */
 uint32_t
 sqrtu(uint32_t n)
 {
 	uint32_t bit = 15, approx = 0;
 	do{
-        uint32_t guess = (approx<<(bit+1)) + (1<<(bit+bit));
-        if(guess <= n){
-            approx |= 1<<bit;
-            n -= guess;
-        }
+		uint32_t guess = (approx<<(bit+1)) + (1<<(bit+bit));
+		if(guess <= n){
+			approx |= 1<<bit;
+			n -= guess;
+		}
 	}while(bit--);
+
+	return approx;
+}
+#endif
+
+
+/*
+	computes the floor sqrt of an unsigned integer
+
+	yet another binary search, this one is pretty similar to the last one but i refactored to make it even faster
+*/
+uint32_t
+sqrtu(uint32_t n)
+{
+	uint32_t bit = 1<<30, approx = 0;
+	do{
+		uint32_t guess = approx + bit;
+		approx>>=1;
+		if(guess <= n){
+			approx |= bit;
+			n -= guess;
+		}
+	}while(bit>>=2);
 
 	return approx;
 }
