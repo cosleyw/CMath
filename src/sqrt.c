@@ -1,5 +1,5 @@
 
-#include"common.h"
+#include"cmath.h"
 
 #if 0
 /*
@@ -9,7 +9,7 @@
 */
 
 uint32_t
-sqrtu(uint32_t n)
+sqrtu32(uint32_t n)
 {
 	uint32_t guess;
 	if(n > 0){
@@ -29,7 +29,7 @@ sqrtu(uint32_t n)
 	its a binary search.
 */
 uint32_t
-sqrtu(uint32_t n)
+sqrtu32(uint32_t n)
 {
 	uint32_t bit = (1<<15), guess = 0;
 
@@ -53,7 +53,7 @@ sqrtu(uint32_t n)
 	and then since approx**2 would be part of every subsequent multiplication im able to subtract it from the original and basically ignore it
 */
 uint32_t
-sqrtu(uint32_t n)
+sqrtu32(uint32_t n)
 {
 	uint32_t bit = 15, approx = 0;
 	do{
@@ -75,7 +75,7 @@ sqrtu(uint32_t n)
 	yet another binary search, this one is pretty similar to the last one but i refactored to make it even faster
 */
 uint32_t
-sqrtu(uint32_t n)
+sqrtu32(uint32_t n)
 {
 	uint32_t bit = 1<<30, approx = 0;
 	do{
@@ -90,7 +90,8 @@ sqrtu(uint32_t n)
 	return approx;
 }
 
-uint64_t
+//used for sqrtf32
+static uint64_t
 sqrtu50(uint64_t n)
 {
 	uint64_t bit = 1ull<<48, approx = 0;
@@ -106,20 +107,18 @@ sqrtu50(uint64_t n)
 	return approx;
 }
 
-
+/*
+	returns the sqrt of a float rounded to nearest
+*/
 float
 sqrtf32(float n)
 {
-	union{
-		float f;
-		uint32_t u;
-	} conv;
-	conv.f = n;
-	uint8_t e = ((conv.u & 0x7f800000u) >> 23)-127;
-	uint64_t nm = sqrtu50((conv.u&0x007fffffull)+(1<<23) << 25+(e&1));
+	uint32_t uval = f32asu32(n);
+	uint8_t e = ((uval & 0x7f800000u) >> 23)-127;
 
+	uint64_t nm = sqrtu50(((uval&0x007fffffull)+(1<<23)) << (25+(e&1)));
 	uint8_t ne = (e>>1)+127;
-	uint32_t nf =(ne<<23)|(nm>>1)+(nm&1);
-	conv.u = nf;
-	return conv.f;
+
+	//you can change the round mode by removing the +(nm&1)
+	return u32asf32((ne<<23)|((nm>>1)+(nm&1)));
 }
