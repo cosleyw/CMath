@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include"src/cmath.h"
+#include"src/test.h"
 
 /*
 
@@ -15,22 +16,16 @@ main(int argc, char **argv)
 	argc--;
 	argv++;
 
-	uint32_t testVal = 1;
-	while(testVal){
-		uint32_t sqr = sqrtu(testVal);
-		for(int64_t i = -1; i < 2; i++){
-			int64_t l = testVal - (sqr-1)*(sqr-1),
-				a = testVal - sqr*sqr,
-			        b = testVal - (sqr+1)*(sqr+1);
+	uint32_t testVal = 0;
+	do{
+		if(val_sqrtu32(testVal))
+			printf("%d \n", testVal);
 
-			if(min(l, min(a, b)) != a)
-				printf("%d \n", testVal);
-		}
 		testVal++;
 
 		if(!(testVal % 100000000))
-			printf("currently at: %d\n", testVal);
-	}
+			printf("currently at: %u\n", testVal);
+	}while(testVal);
 
 	return 0;
 }
