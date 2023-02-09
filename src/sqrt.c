@@ -90,3 +90,36 @@ sqrtu(uint32_t n)
 	return approx;
 }
 
+uint64_t
+sqrtu50(uint64_t n)
+{
+	uint64_t bit = 1ull<<48, approx = 0;
+	do{
+		uint64_t guess = approx + bit;
+		approx>>=1;
+		if(guess <= n){
+			approx |= bit;
+			n -= guess;
+		}
+	}while(bit>>=2);
+
+	return approx;
+}
+
+
+float
+sqrtf32(float n)
+{
+	union{
+		float f;
+		uint32_t u;
+	} conv;
+	conv.f = n;
+	uint8_t e = ((conv.u & 0x7f800000u) >> 23)-127;
+	uint64_t nm = sqrtu50((conv.u&0x007fffffull)+(1<<23) << 25+(e&1));
+
+	uint8_t ne = (e>>1)+127;
+	uint32_t nf =(ne<<23)|(nm>>1)+(nm&1);
+	conv.u = nf;
+	return conv.f;
+}
