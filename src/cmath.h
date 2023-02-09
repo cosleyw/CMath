@@ -5,5 +5,6 @@
 
 uint32_t sqrtu(uint32_t);
 uint32_t expu(uint32_t, uint32_t);
+uint32_t log2u(uint32_t, uint32_t);
 
 #endif
