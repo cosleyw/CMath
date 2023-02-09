@@ -1,4 +1,4 @@
-#include"common.h"
+#include"cmath.h"
 
 #if 0
 /*
@@ -7,7 +7,7 @@
 	classic loop variant.
 */
 uint32_t
-log2u(uint32_t n)
+log2u32(uint32_t n)
 {
 	uint32_t approx = 0;
 	while(n>>=1)
@@ -23,7 +23,7 @@ log2u(uint32_t n)
 	its a binary search.
 */
 uint32_t
-log2u(uint32_t n)
+log2u32(uint32_t n)
 {
 	uint32_t approx = 0, bit = 1<<5;
 	do{
@@ -34,4 +34,10 @@ log2u(uint32_t n)
 	}while(bit >>= 1);
 
 	return approx;
+}
+
+inline int32_t
+i32log2f32(float n)
+{
+	return ((f32asu32(n)>>23) & 0xff) - 127;
 }
