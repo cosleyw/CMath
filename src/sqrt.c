@@ -109,16 +109,19 @@ sqrtu50(uint64_t n)
 
 /*
 	returns the sqrt of a float rounded to nearest
+
+	this function only returns a correct value when n is not infinity, nan, negative, or a subnormal.
+	it should be trivial to deal with those cases if you actually want to use this
 */
 float
 sqrtf32(float n)
 {
 	uint32_t uval = f32asu32(n);
-	uint8_t e = ((uval & 0x7f800000u) >> 23)-127;
-
-	uint64_t nm = sqrtu50(((uval&0x007fffffull)+(1<<23)) << (25+(e&1)));
+	//signed to force arith shift
+	int8_t e = (uval>>23)-127;
+	uint64_t nm = sqrtu50(((uval&0xffffffull)|(1<<23))<<(25+(e&1)));
+	//if you want it to round down remove the +(nm&1)
+	nm = ((nm>>1)+(nm&1))^(1<<23);
 	uint8_t ne = (e>>1)+127;
-
-	//you can change the round mode by removing the +(nm&1)
-	return u32asf32((ne<<23)|((nm>>1)+(nm&1)));
+	return u32asf32((ne<<23)|nm);
 }
