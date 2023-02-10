@@ -48,9 +48,9 @@ f32asu32(float a)
 	union{
 		float f;
 		uint32_t i;
-	} conv = {.i = a};
+	} conv = {.f = a};
 
-	return conv.f;
+	return conv.i;
 }
 
 /*
@@ -62,9 +62,9 @@ f64asu64(double a)
 	union{
 		double f;
 		uint64_t i;
-	} conv = {.i = a};
+	} conv = {.f = a};
 
-	return conv.f;
+	return conv.i;
 }
 
 
