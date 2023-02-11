@@ -36,8 +36,8 @@ log2u32(uint32_t n)
 	return approx;
 }
 
-inline int32_t
-i32log2f32(float n)
+inline int16_t
+i16log2f32(float n)
 {
 	return ((f32asu32(n)>>23) & 0xff) - 127;
 }
