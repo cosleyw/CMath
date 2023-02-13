@@ -53,13 +53,14 @@ float
 log2f32(float n)
 {
 	uint8_t bit = 24;
-	int64_t res = i16log2f32(n)<<24;
+	int64_t res = i16log2f32(n);
 	n = u32asf32((f32asu32(n) & 0x7fffff) | 0x3f800000);
 
 	while(bit--){
 		n*=n;
+		res<<=1;
 		if(f32asu32(n) & 0x40000000){
-			res |= 1ull << bit;
+			res++;
 			n = u32asf32(f32asu32(n) - 0x800000);
 		}
 	}

@@ -5,8 +5,8 @@
 #include<time.h>
 #include"cmath.h"
 
-//time macro will print how long the statements you pass it took to execute in seconds
-#define TIME(a){clock_t _time_start=clock();{a}clock_t _time_end=clock();printf("%f",(float)(_time_end-_time_start)*(1.0f/CLOCKS_PER_SECOND));}
+//time macro will store how long the given operation took in the second argument, which is expected to be a double pointer.
+#define TIME(a, b){clock_t _time_start=clock();{a}clock_t _time_end=clock();*(b)=(float)(_time_end-_time_start)*(1.0f/CLOCKS_PER_SECOND);}0
 
 //prevents value from being optimized away
 #define KEEP(a){volatile typeof(a) _time_val=a;}
