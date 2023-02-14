@@ -10,7 +10,7 @@
 float
 roundf32(float n)
 {
-	return (n+0x1p23f)-0x1p23f;
+	return n > 0 ? (n+0x1p23f)-0x1p23f : (n-0x1p23f)+0x1p23f;
 }
 
 /*
@@ -23,5 +23,5 @@ roundf32(float n)
 double
 roundf64(double n)
 {
-	return (n+0x1p52l)-0x1p52l;
+	return n > 0 ? (n+0x1p52l)-0x1p52l : (n-0x1p52l)+0x1p52l;
 }
