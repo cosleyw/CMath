@@ -73,6 +73,7 @@ sqrtu32(uint32_t n)
 	computes the floor sqrt of an unsigned integer
 
 	yet another binary search, this one is pretty similar to the last one but i refactored to make it even faster
+	apperently chat gpt can generate this, so i deffinetly wasn't the first to find it
 */
 uint32_t
 sqrtu32(uint32_t n)
