@@ -1,4 +1,4 @@
-#include"cmath.h"
+#include"common.h"
 
 /*
  	rounds based on the floating point rounding mode

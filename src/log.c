@@ -1,4 +1,4 @@
-#include"cmath.h"
+#include"common.h"
 
 #if 0
 /*
