@@ -23,8 +23,7 @@ expu32(uint32_t n, uint32_t u)
 float
 exp2f32i(uint16_t e)
 {	uint8_t m = (e+127);
-	uint32_t f = m;
-	return u32asf32(f << 23);
+	return u32asf32(m << 23);
 }
 
 float
