@@ -91,6 +91,7 @@ sqrtu32(uint32_t n)
 	return approx;
 }
 
+#if 0
 //used for sqrtf32
 static uint64_t
 sqrtu50(uint64_t n)
@@ -123,6 +124,39 @@ sqrtf32(float n)
 	uint64_t nm = sqrtu50(((uval&0xffffffull)|(1<<23))<<(25+(e&1)));
 	//if you want it to round down remove the +(nm&1)
 	nm = ((nm>>1)+(nm&1))^(1<<23);
+	uint8_t ne = (e>>1)+127;
+	return u32asf32((ne<<23)|nm);
+}
+#endif
+
+/*
+	returns the sqrt of a float rounded to nearest
+
+	need to test it properly
+	this one is better than the last one because it doesn't use 64 bit types at all meaning it is pretty trivial to make it work for doubles :)
+*/
+
+float
+sqrtf32(float n)
+{
+	uint32_t uval = f32asu32(n);
+	int8_t e = (uval>>23)-127;
+
+	uint32_t m = (uval&0xffffffull)|(1<<23);
+	m <<= 1 + (e&1);
+
+	uint32_t bit = 1<<25, nm = 0;
+	do{
+		uint32_t guess = nm + bit;
+		m = m + m;
+		if(guess <= m){
+		nm = guess + bit;
+		m -= guess;
+		}
+	}while(bit>>=1);
+
+	nm = (nm>>3)^(1<<23);
+
 	uint8_t ne = (e>>1)+127;
 	return u32asf32((ne<<23)|nm);
 }
