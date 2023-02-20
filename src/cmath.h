@@ -2,6 +2,7 @@
 #ifndef CMATH_CMATH_H
 #define CMATH_CMATH_H
 #include"common.h"
+#include"constants.h"
 
 uint32_t sqrtu32(uint32_t);
 float sqrtf32(float);

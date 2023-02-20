@@ -45,8 +45,7 @@ i16log2f32(float n)
 /*
 	computes log2 of a float
 
-	it appears to be off by one ulp sometimes, could probably fix my using double instead of floats internally.
-
+	it appears to be off by one ulp sometimes
 	works on anything that isn't nan, subnormal, negative, or infinity
 */
 float
@@ -67,4 +66,3 @@ log2f32(float n)
 
 	return res * 0x1p-24;
 }
-
