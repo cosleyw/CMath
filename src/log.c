@@ -7,7 +7,7 @@
 	classic loop variant.
 */
 uint32_t
-log2u32(uint32_t n)
+cmath_log2u32(uint32_t n)
 {
 	uint32_t approx = 0;
 	while(n>>=1)
@@ -23,7 +23,7 @@ log2u32(uint32_t n)
 	its a binary search.
 */
 uint32_t
-log2u32(uint32_t n)
+cmath_log2u32(uint32_t n)
 {
 	uint32_t approx = 0, bit = 1<<5;
 	do{
@@ -37,7 +37,7 @@ log2u32(uint32_t n)
 }
 
 inline int16_t
-i16log2f32(float n)
+cmath_i16log2f32(float n)
 {
 	return ((f32asu32(n)>>23) & 0xff) - 127;
 }
@@ -49,10 +49,10 @@ i16log2f32(float n)
 	works on anything that isn't nan, subnormal, negative, or infinity
 */
 float
-log2f32(float n)
+cmath_log2f32(float n)
 {
 	uint8_t bit = 24;
-	int64_t res = i16log2f32(n);
+	int64_t res = cmath_i16log2f32(n);
 	n = u32asf32((f32asu32(n) & 0x7fffff) | 0x3f800000);
 
 	while(bit--){

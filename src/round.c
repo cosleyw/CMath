@@ -8,7 +8,7 @@
 	FE_TONEAREST turns it into round for the most part (if your number is x.5 it will round to x)
 */
 float
-roundf32(float n)
+cmath_roundf32(float n)
 {
 	return n > 0 ? (n+0x1p23f)-0x1p23f : (n-0x1p23f)+0x1p23f;
 }
@@ -21,7 +21,7 @@ roundf32(float n)
 	FE_TONEAREST turns it into round for the most part (if your number is x.5 it will round to x)
 */
 double
-roundf64(double n)
+cmath_roundf64(double n)
 {
 	return n > 0 ? (n+0x1p52l)-0x1p52l : (n-0x1p52l)+0x1p52l;
 }

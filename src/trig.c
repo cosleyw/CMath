@@ -2,13 +2,13 @@
 #include"constants.h"
 
 float
-cosf32(float n)
+cmath_cosf32(float n)
 {
 
 }
 
 float
-sinf32(float n)
+cmath_sinf32(float n)
 {
 
 }

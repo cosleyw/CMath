@@ -9,7 +9,7 @@
 */
 
 uint32_t
-sqrtu32(uint32_t n)
+cmath_sqrtu32(uint32_t n)
 {
 	uint32_t guess;
 	if(n > 0){
@@ -29,7 +29,7 @@ sqrtu32(uint32_t n)
 	its a binary search.
 */
 uint32_t
-sqrtu32(uint32_t n)
+cmath_sqrtu32(uint32_t n)
 {
 	uint32_t bit = (1<<15), guess = 0;
 
@@ -53,7 +53,7 @@ sqrtu32(uint32_t n)
 	and then since approx**2 would be part of every subsequent multiplication im able to subtract it from the original and basically ignore it
 */
 uint32_t
-sqrtu32(uint32_t n)
+cmath_sqrtu32(uint32_t n)
 {
 	uint32_t bit = 15, approx = 0;
 	do{
@@ -76,7 +76,7 @@ sqrtu32(uint32_t n)
 	apperently chat gpt can generate this, so i deffinetly wasn't the first to find it
 */
 uint32_t
-sqrtu32(uint32_t n)
+cmath_sqrtu32(uint32_t n)
 {
 	uint32_t bit = 1<<30, approx = 0;
 	do{
@@ -94,7 +94,7 @@ sqrtu32(uint32_t n)
 #if 0
 //used for sqrtf32
 static uint64_t
-sqrtu50(uint64_t n)
+cmath_sqrtu50(uint64_t n)
 {
 	uint64_t bit = 1ull<<48, approx = 0;
 	do{
@@ -116,12 +116,12 @@ sqrtu50(uint64_t n)
 	it should be trivial to deal with those cases if you actually want to use this
 */
 float
-sqrtf32(float n)
+cmath_sqrtf32(float n)
 {
 	uint32_t uval = f32asu32(n);
 	//signed to force arith shift
 	int8_t e = (uval>>23)-127;
-	uint64_t nm = sqrtu50(((uval&0xffffffull)|(1<<23))<<(25+(e&1)));
+	uint64_t nm = cmath_sqrtu50(((uval&0xffffffull)|(1<<23))<<(25+(e&1)));
 	//if you want it to round down remove the +(nm&1)
 	nm = ((nm>>1)+(nm&1))^(1<<23);
 	uint8_t ne = (e>>1)+127;
@@ -137,7 +137,7 @@ sqrtf32(float n)
 */
 
 float
-sqrtf32(float n)
+cmath_sqrtf32(float n)
 {
 	uint32_t uval = f32asu32(n);
 	int8_t e = (uval>>23)-127;
