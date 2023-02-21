@@ -128,7 +128,7 @@ cmath_sqrtf32(float n)
 	return u32asf32((ne<<23)|nm);
 }
 #endif
-
+#if 0
 /*
 	returns the sqrt of a float rounded to nearest
 
@@ -160,3 +160,39 @@ cmath_sqrtf32(float n)
 	uint8_t ne = (e>>1)+127;
 	return u32asf32((ne<<23)|nm);
 }
+#endif
+
+/*
+	returns the sqrt of a float rounded to nearest
+
+	need to test it properly
+	this one is better than the last one because it doesn't use 64 bit types at all meaning it is pretty trivial to make it work for doubles :)
+*/
+
+float
+cmath_sqrtf32(float n)
+{
+	static const uint32_t
+		E_MASK = 0x7f000000,
+		M_MASK = 0xffffff,
+		M_BIT = 0x800000,
+		R_OFF = 0x3f000000;
+
+	int32_t 
+		uval = f32asu32(n) - M_BIT,
+		m = uval&M_MASK,
+		e = uval&E_MASK;
+
+	int32_t bit = 1<<22, nm = 1<<24, guess;
+
+	do{
+		guess = nm + bit;
+		if(guess <= (m<<=1)){
+			nm = guess + bit;
+			m -= guess;
+		}
+	}while(bit>>=1);
+
+	return u32asf32((e+nm+R_OFF)>>1);
+}
+
