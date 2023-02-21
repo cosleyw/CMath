@@ -6,6 +6,7 @@
 
 uint32_t cmath_sqrtu32(uint32_t);
 float cmath_sqrtf32(float);
+double cmath_sqrtf64(double);
 
 uint32_t cmath_expu32(uint32_t, uint32_t);
 float cmath_exp2f32(float);
