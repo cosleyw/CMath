@@ -196,3 +196,39 @@ cmath_sqrtf32(float n)
 	return u32asf32((e+nm+R_OFF)>>1);
 }
 
+
+
+/*
+	returns the sqrt of a double
+
+	need to test it properly
+*/
+
+double
+cmath_sqrtf64(double n)
+{
+	static const int64_t
+		E_MASK = 0x7ff0000000000000,
+		M_MASK = 0xfffffffffffffll,
+		M_BIT =  0x10000000000000ll;
+
+	int64_t 
+		uval = f64asu64(n),
+		e = (uval >> 52) - 1023,
+		m = ((uval&M_MASK) | M_BIT) << (e&1);
+
+	int64_t bit = 1ll<<53, nm = 0, guess;
+
+	do{
+		guess = nm + bit;
+		if(guess <= (m<<=1)){
+			nm = guess + bit;
+			m -= guess;
+		}
+	}while(bit>>=1);
+
+	nm>>=2;
+	uint64_t ne = (((e >> 1) + 1023) << 52) & E_MASK;
+	return u64asf64(ne|(nm^M_BIT));
+}
+
