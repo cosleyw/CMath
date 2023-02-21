@@ -139,39 +139,6 @@ cmath_sqrtf32(float n)
 float
 cmath_sqrtf32(float n)
 {
-	uint32_t uval = f32asu32(n);
-	int8_t e = (uval>>23)-127;
-
-	uint32_t m = (uval&0xffffffull)|(1<<23);
-	m <<= 1 + (e&1);
-
-	uint32_t bit = 1<<25, nm = 0;
-	do{
-		uint32_t guess = nm + bit;
-		m = m + m;
-		if(guess <= m){
-		nm = guess + bit;
-		m -= guess;
-		}
-	}while(bit>>=1);
-
-	nm = (nm>>3)^(1<<23);
-
-	uint8_t ne = (e>>1)+127;
-	return u32asf32((ne<<23)|nm);
-}
-#endif
-
-/*
-	returns the sqrt of a float rounded to nearest
-
-	need to test it properly
-	this one is better than the last one because it doesn't use 64 bit types at all meaning it is pretty trivial to make it work for doubles :)
-*/
-
-float
-cmath_sqrtf32(float n)
-{
 	static const uint32_t
 		E_MASK = 0x7f000000,
 		M_MASK = 0xffffff,
@@ -195,13 +162,44 @@ cmath_sqrtf32(float n)
 
 	return u32asf32((e+nm+R_OFF)>>1);
 }
+#endif
 
+/*
+	returns the sqrt of a float rounded to nearest
 
+	this one is better than the last one because it doesn't use 64 bit types at all meaning it is pretty trivial to make it work for doubles :)
+	same as glibc sqrtf for positive numbers that are not infinity nan or subnormal :)
+*/
+
+float
+cmath_sqrtf32(float n)
+{
+	uint32_t uval = f32asu32(n);
+	int8_t e = (uval>>23)-127;
+
+	uint32_t m = (uval&0xffffffull)|(1<<23);
+	m <<= 1 + (e&1);
+
+	uint32_t bit = 1<<25, nm = 0;
+	do{
+		uint32_t guess = nm + bit;
+		m = m + m;
+		if(guess <= m){
+		nm = guess + bit;
+		m -= guess;
+		}
+	}while(bit>>=1);
+
+	nm = ((nm>>3)^(1<<23)) + ((nm>>2) & 1);
+
+	uint8_t ne = (e>>1)+127;
+	return u32asf32((ne<<23)|nm);
+}
 
 /*
 	returns the sqrt of a double
 
-	need to test it properly
+	need to test it properly, can't really go brute force though hmm...
 */
 
 double
@@ -227,7 +225,7 @@ cmath_sqrtf64(double n)
 		}
 	}while(bit>>=1);
 
-	nm>>=2;
+	nm=(nm>>2)+((nm&2)>>1);
 	uint64_t ne = (((e >> 1) + 1023) << 52) & E_MASK;
 	return u64asf64(ne|(nm^M_BIT));
 }
