@@ -15,6 +15,6 @@ clean:
 	${CC} ${CFLAGS} -c $< -o $@
 
 CMath: cmath.c ${OBJ}
-	${CC} ${CFLAGS} $^ -o $@
+	${CC} ${CFLAGS} $^ -o $@ -lm
 
 .PHONY: all clean
